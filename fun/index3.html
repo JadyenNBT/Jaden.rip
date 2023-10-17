@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guess the Word Game</title>
+</head>
+<body>
+    <h1>Guess the Word Game</h1>
+    <p>Guess the word:</p>
+    <input type="text" id="guessInput">
+    <button onclick="checkGuess()">Submit Guess</button>
+    <p id="message"></p>
+
+    <script>
+        // Array of words for the game
+        const words = ["apple", "banana", "chocolate", "elephant", "giraffe", "javascript", "programming", "unicorn"];
+
+        // Randomly select a word from the array
+        const randomIndex = Math.floor(Math.random() * words.length);
+        const secretWord = words[randomIndex];
+
+        // Initialize variables
+        let remainingAttempts = 3;
+        let guessedWord = Array(secretWord.length).fill("_").join("");
+
+        function checkGuess() {
+            const guess = document.getElementById("guessInput").value.toLowerCase();
+            const message = document.getElementById("message");
+
+            if (guess === secretWord) {
+                message.textContent = "Congratulations! You guessed the word correctly: " + secretWord;
+                disableInputAndButton();
+            } else if (remainingAttempts === 0) {
+                message.textContent = "Sorry, you're out of attempts. The correct word was: " + secretWord;
+                disableInputAndButton();
+            } else {
+                remainingAttempts--;
+                message.textContent = "Incorrect guess. You have " + remainingAttempts + " attempts left.";
+            }
+
+            document.getElementById("guessInput").value = "";
+        }
+
+        function disableInputAndButton() {
+            document.getElementById("guessInput").disabled = true;
+            document.querySelector("button").disabled = true;
+        }
+
+        // Display the initial status of the word
+        document.getElementById("message").textContent = "Word: " + guessedWord;
+    </script>
+</body>
+</html>

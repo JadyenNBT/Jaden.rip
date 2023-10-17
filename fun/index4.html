@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Whack-a-Mole Game</title>
+    <style>
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+        }
+        .hole {
+            width: 100px;
+            height: 100px;
+            background: #222;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 24px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Whack-a-Mole Game</h1>
+    <p>Click on the moles as they appear!</p>
+    <p>Score: <span id="score">0</span></p>
+    <div class="game-container" id="gameContainer"></div>
+
+    <script>
+        const gameContainer = document.getElementById("gameContainer");
+        const scoreDisplay = document.getElementById("score");
+
+        let score = 0;
+        let timeLeft = 30; // Game duration in seconds
+        let moleInterval;
+
+        function startGame() {
+            score = 0;
+            timeLeft = 30;
+            scoreDisplay.textContent = score;
+            gameContainer.innerHTML = "";
+
+            clearInterval(moleInterval);
+            moleInterval = setInterval(placeMole, 1000);
+            setTimeout(endGame, timeLeft * 1000);
+        }
+
+        function placeMole() {
+            const hole = document.createElement("div");
+            hole.classList.add("hole");
+            hole.textContent = "🐭";
+            hole.addEventListener("click", whackMole);
+            gameContainer.appendChild(hole);
+
+            setTimeout(() => {
+                hole.remove();
+            }, 1000);
+        }
+
+        function whackMole() {
+            this.remove();
+            score++;
+            scoreDisplay.textContent = score;
+        }
+
+        function endGame() {
+            clearInterval(moleInterval);
+            alert(`Game over! Your score is ${score}`);
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
+
